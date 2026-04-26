@@ -1,16 +1,14 @@
-import { Routes, Route, useLocation, BrowserRouter } from 'react-router-dom';
+import { Routes, Route, useLocation, BrowserRouter, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-import HomePage from './pages/HomePage';
 import MobilityPage from './pages/MobilityPage';
 import VisaCheckerPage from './pages/VisaCheckerPage';
 import ContactPage from './pages/ContactPage';
 
-// Scroll to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -19,7 +17,6 @@ function ScrollToTop() {
   return null;
 }
 
-// Fade transition for all pages
 const pageVariants = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 0.3 } },
@@ -51,9 +48,8 @@ function AppInner() {
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <AnimatePresence mode="wait" initial={false}>
           <Routes location={location} key={location.pathname}>
-            <Route path="/" element={
-              <AnimatedPage><HomePage /></AnimatedPage>
-            } />
+            {/* Root redirects to Mobility — no separate Home page */}
+            <Route path="/" element={<Navigate to="/mobility" replace />} />
             <Route path="/mobility" element={
               <AnimatedPage><MobilityPage /></AnimatedPage>
             } />
@@ -63,6 +59,8 @@ function AppInner() {
             <Route path="/contact" element={
               <AnimatedPage><ContactPage /></AnimatedPage>
             } />
+            {/* Catch-all — redirect unknown routes to mobility */}
+            <Route path="*" element={<Navigate to="/mobility" replace />} />
           </Routes>
         </AnimatePresence>
       </main>
