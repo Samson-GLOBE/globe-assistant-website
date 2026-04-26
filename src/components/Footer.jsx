@@ -1,38 +1,165 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   return (
-    <footer style={{ background: '#2C1810', color: '#FAF3E8' }} className="mt-12 py-10">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b" style={{ borderColor: '#4A2208' }}>
-          <div>
-            <h3 className="font-display text-xl font-semibold mb-3">About GLOBE</h3>
-            <p className="text-sm text-stone-300 leading-relaxed">
-              The GLOBE Mobility Assistant is a student-built guide for the Erasmus Mundus
-              Master in Global Change Ecology and Biodiversity Management.
-            </p>
+    <footer style={styles.footer}>
+      <div style={styles.inner}>
+
+        {/* Left — GLOBE branding */}
+        <div style={styles.col}>
+          <div style={styles.logoRow}>
+            <img
+              src="/icon-192.png.png"
+              alt="GLOBE logo"
+              style={styles.logoImg}
+            />
+            <div>
+              <div style={styles.logoTitle}>GLOBE Mobility Assistant</div>
+              <div style={styles.logoSub}>Global Opportunities & Beyond</div>
+            </div>
           </div>
-          <div>
-            <h3 className="font-display text-xl font-semibold mb-3">Quick Links</h3>
-            <ul className="flex flex-col gap-2 text-sm text-stone-300">
-              <li><a href="/mobility" className="hover:text-amber-300 transition-colors">Mobility Guide</a></li>
-              <li><a href="/visa-checker" className="hover:text-amber-300 transition-colors">Visa Checker</a></li>
-              <li><a href="/about" className="hover:text-amber-300 transition-colors">About the App</a></li>
-              <li><a href="/contact" className="hover:text-amber-300 transition-colors">Contact & Support</a></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="font-display text-xl font-semibold mb-3">Partner Universities</h3>
-            <ul className="flex flex-col gap-2 text-sm text-stone-300">
-              <li>🇪🇸 Universidad Rey Juan Carlos</li>
-              <li>🇬🇧 Bangor University</li>
-              <li>🇲🇽 Universidad Autónoma de Tlaxcala</li>
-              <li>🇵🇹 Universidade de Lisboa</li>
-            </ul>
-          </div>
+          <p style={styles.description}>
+            Supporting student mobility across Europe and beyond through the
+            GLOBE Erasmus+ programme.
+          </p>
         </div>
-        <div className="pt-6 text-center text-xs text-stone-400">
-          © 2025 GLOBE Mobility Assistant &middot; An independent student guide &middot; Not an official GLOBE publication
+
+        {/* Centre — Quick links */}
+        <div style={styles.col}>
+          <h4 style={styles.colTitle}>Quick Links</h4>
+          <ul style={styles.linkList}>
+            <li><Link to="/" style={styles.link}>Home</Link></li>
+            <li><Link to="/mobility" style={styles.link}>Mobility Guide</Link></li>
+            <li><Link to="/visa" style={styles.link}>Visa Checker</Link></li>
+            <li><Link to="/contact" style={styles.link}>Contact</Link></li>
+          </ul>
         </div>
+
+        {/* Right — EU badge */}
+        <div style={{ ...styles.col, alignItems: 'center' }}>
+          <img
+            src="/eu-badge.png"
+            alt="Co-funded by the European Union"
+            style={styles.euBadge}
+            onError={e => { e.target.style.display = 'none'; }}
+          />
+          <p style={styles.euText}>
+            Co-funded by the European Union
+          </p>
+        </div>
+
+      </div>
+
+      {/* Bottom bar */}
+      <div style={styles.bottomBar}>
+        <span>© {new Date().getFullYear()} GLOBE Programme · Erasmus+</span>
+        <a
+          href="https://globe-master.eu"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={styles.bottomLink}
+        >
+          globe-master.eu ↗
+        </a>
       </div>
     </footer>
   );
 }
+
+const styles = {
+  footer: {
+    background: '#32373c',
+    color: '#d0d5da',
+    marginTop: 'auto',
+  },
+  inner: {
+    maxWidth: '1100px',
+    margin: '0 auto',
+    padding: '2.5rem 1.5rem',
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '2rem',
+    justifyContent: 'space-between',
+  },
+  col: {
+    flex: '1 1 220px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.75rem',
+  },
+  logoRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.75rem',
+  },
+  logoImg: {
+    width: '44px',
+    height: '44px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '2px solid #2ad2c9',
+  },
+  logoTitle: {
+    fontSize: '1rem',
+    fontWeight: '700',
+    color: '#ffffff',
+    lineHeight: 1.2,
+  },
+  logoSub: {
+    fontSize: '0.75rem',
+    color: '#2ad2c9',
+    letterSpacing: '0.03em',
+  },
+  description: {
+    fontSize: '0.85rem',
+    lineHeight: '1.6',
+    color: '#9aa0a8',
+  },
+  colTitle: {
+    fontSize: '0.8rem',
+    fontWeight: '700',
+    textTransform: 'uppercase',
+    letterSpacing: '0.08em',
+    color: '#2ad2c9',
+    marginBottom: '0.25rem',
+  },
+  linkList: {
+    listStyle: 'none',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.4rem',
+  },
+  link: {
+    color: '#b0b8c2',
+    textDecoration: 'none',
+    fontSize: '0.9rem',
+    transition: 'color 0.15s',
+  },
+  euBadge: {
+    maxWidth: '180px',
+    width: '100%',
+    borderRadius: '8px',
+  },
+  euText: {
+    fontSize: '0.75rem',
+    color: '#9aa0a8',
+    textAlign: 'center',
+  },
+  bottomBar: {
+    borderTop: '1px solid rgba(255,255,255,0.08)',
+    padding: '1rem 1.5rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    gap: '0.5rem',
+    fontSize: '0.8rem',
+    color: '#6c757d',
+    maxWidth: '1100px',
+    margin: '0 auto',
+    width: '100%',
+  },
+  bottomLink: {
+    color: '#2ad2c9',
+    textDecoration: 'none',
+  },
+};
