@@ -58,12 +58,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col" style={{
-  backgroundImage: 'linear-gradient(rgba(250,243,232,0.72), rgba(250,243,232,0.72)), url(/globe-bg.jpg.jpg)',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundAttachment: 'fixed'
-}}>
+      <div className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">
           <AnimatedRoutes />
