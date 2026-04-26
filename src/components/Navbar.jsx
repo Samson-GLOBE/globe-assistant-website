@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const navLinks = [
-  { to: '/',         label: 'Home' },
   { to: '/mobility', label: 'Mobility' },
   { to: '/visa',     label: 'Visa Checker' },
   { to: '/contact',  label: 'Contact' },
@@ -17,7 +16,7 @@ export default function Navbar() {
       <div style={styles.inner}>
 
         {/* Logo */}
-        <Link to="/" style={styles.logoLink}>
+        <Link to="/mobility" style={styles.logoLink}>
           <img
             src="/icon-192.png.png"
             alt="GLOBE logo"
@@ -135,7 +134,7 @@ const styles = {
     fontWeight: '600',
   },
   hamburger: {
-    display: 'none',   // shown via @media in real CSS; we'll use inline workaround
+    display: 'none',
     flexDirection: 'column',
     gap: '4px',
     background: 'none',
@@ -171,11 +170,3 @@ const styles = {
     background: '#f0fffe',
   },
 };
-
-// Make hamburger visible on small screens via a style tag
-const responsiveStyle = `
-  @media (max-width: 640px) {
-    [data-hamburger] { display: flex !important; }
-    [data-desktop-links] { display: none !important; }
-  }
-`;
