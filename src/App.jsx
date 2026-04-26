@@ -1,71 +1,73 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect } from 'react';
+
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import InstallPrompt from './components/InstallPrompt';
+
+import HomePage from './pages/HomePage';
 import MobilityPage from './pages/MobilityPage';
 import VisaCheckerPage from './pages/VisaCheckerPage';
-import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
-import SpainPage from './pages/country/SpainPage';
-import UKPage from './pages/country/UKPage';
-import MexicoPage from './pages/country/MexicoPage';
-import PortugalPage from './pages/country/PortugalPage';
 
-const pageVariants = {
-  initial: { opacity: 0, y: 14 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.28, ease: 'easeOut' } },
-  exit:    { opacity: 0,        transition: { duration: 0.15 } },
-};
-
-// Scrolls to top on every page change
+// Scroll to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
   return null;
 }
 
-function AnimatedRoutes() {
-  const location = useLocation();
+// Fade transition for all pages
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.3 } },
+  exit:    { opacity: 0, transition: { duration: 0.2 } },
+};
+
+function AnimatedPage({ children }) {
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={location.pathname}
-        variants={pageVariants}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-        style={{ position: 'relative', width: '100%' }}
-      >
-        <Routes location={location}>
-          <Route path="/"                  element={<MobilityPage />} />
-          <Route path="/mobility"          element={<MobilityPage />} />
-          <Route path="/mobility/spain"    element={<SpainPage />} />
-          <Route path="/mobility/uk"       element={<UKPage />} />
-          <Route path="/mobility/mexico"   element={<MexicoPage />} />
-          <Route path="/mobility/portugal" element={<PortugalPage />} />
-          <Route path="/visa-checker"      element={<VisaCheckerPage />} />
-          <Route path="/about"             element={<AboutPage />} />
-          <Route path="/contact"           element={<ContactPage />} />
-        </Routes>
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column' }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
 export default function App() {
+  const location = useLocation();
+
   return (
-    <BrowserRouter>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <ScrollToTop />
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-        <InstallPrompt />
-      </div>
-    </BrowserRouter>
+      <Navbar />
+
+      <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.pathname}>
+            <Route path="/" element={
+              <AnimatedPage><HomePage /></AnimatedPage>
+            } />
+            <Route path="/mobility" element={
+              <AnimatedPage><MobilityPage /></AnimatedPage>
+            } />
+            <Route path="/visa" element={
+              <AnimatedPage><VisaCheckerPage /></AnimatedPage>
+            } />
+            <Route path="/contact" element={
+              <AnimatedPage><ContactPage /></AnimatedPage>
+            } />
+          </Routes>
+        </AnimatePresence>
+      </main>
+
+      <Footer />
+    </div>
   );
 }
