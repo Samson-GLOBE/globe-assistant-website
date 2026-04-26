@@ -1,44 +1,181 @@
 import { useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, Globe } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+
+const navLinks = [
+  { to: '/',         label: 'Home' },
+  { to: '/mobility', label: 'Mobility' },
+  { to: '/visa',     label: 'Visa Checker' },
+  { to: '/contact',  label: 'Contact' },
+];
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const links = [
-    { label: 'Mobility',      to: '/mobility' },
-    { label: 'Visa Checker',  to: '/visa-checker' },
-    { label: 'About',         to: '/about' },
-    { label: 'Contact',       to: '/contact' },
-  ];
-  const linkClass = ({ isActive }) =>
-    `text-sm font-medium transition-colors duration-150 pb-0.5 border-b-2 ${
-      isActive
-        ? 'text-amber-300 border-amber-300'
-        : 'text-stone-300 border-transparent hover:text-white hover:border-stone-500'
-    }`;
+  const { pathname } = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav style={{ background: '#2C1810', borderBottom: '1px solid #4A2208' }} className="sticky top-0 z-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        <NavLink to="/" className="flex items-center gap-2.5">
-          <Globe size={18} color="#D4A96A" />
-          <span style={{ fontFamily: 'Cormorant Garamond, serif', fontWeight: 700, fontSize: '18px', color: '#FAF3E8', letterSpacing: '1px' }}>GLOBE</span>
-          <span style={{ fontSize: '11px', color: '#A07060', letterSpacing: '0.5px', marginTop: '2px' }}>Mobility Assistant</span>
-        </NavLink>
-        <div className="hidden md:flex items-center gap-7">
-          {links.map(l => <NavLink key={l.to} to={l.to} className={linkClass}>{l.label}</NavLink>)}
-        </div>
-        <button onClick={() => setOpen(!open)} className="md:hidden text-stone-300 hover:text-white">
-          {open ? <X size={22} /> : <Menu size={22} />}
+    <nav style={styles.nav}>
+      <div style={styles.inner}>
+
+        {/* Logo */}
+        <Link to="/" style={styles.logoLink}>
+          <img
+            src="/icon-192.png.png"
+            alt="GLOBE logo"
+            style={styles.logoImg}
+          />
+          <span style={styles.logoText}>GLOBE Assistant</span>
+        </Link>
+
+        {/* Desktop links */}
+        <ul style={styles.desktopLinks}>
+          {navLinks.map(({ to, label }) => (
+            <li key={to}>
+              <Link
+                to={to}
+                style={{
+                  ...styles.link,
+                  ...(pathname === to ? styles.linkActive : {}),
+                }}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mobile hamburger */}
+        <button
+          style={styles.hamburger}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label="Toggle menu"
+        >
+          <span style={styles.bar} />
+          <span style={styles.bar} />
+          <span style={styles.bar} />
         </button>
       </div>
-      {open && (
-        <div style={{ background: '#1A0E08', borderTop: '1px solid #4A2208' }} className="md:hidden px-4 py-4 flex flex-col gap-4">
-          {links.map(l => (
-            <NavLink key={l.to} to={l.to} className={linkClass} onClick={() => setOpen(false)}>{l.label}</NavLink>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div style={styles.mobileMenu}>
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              style={{
+                ...styles.mobileLink,
+                ...(pathname === to ? styles.mobileLinkActive : {}),
+              }}
+              onClick={() => setMenuOpen(false)}
+            >
+              {label}
+            </Link>
           ))}
         </div>
       )}
     </nav>
   );
 }
+
+const styles = {
+  nav: {
+    background: '#ffffff',
+    borderBottom: '2px solid #2ad2c9',
+    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+    position: 'sticky',
+    top: 0,
+    zIndex: 1000,
+  },
+  inner: {
+    maxWidth: '1100px',
+    margin: '0 auto',
+    padding: '0 1.25rem',
+    height: '64px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  logoLink: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.6rem',
+    textDecoration: 'none',
+  },
+  logoImg: {
+    height: '40px',
+    width: '40px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+  },
+  logoText: {
+    fontSize: '1.1rem',
+    fontWeight: '700',
+    color: '#32373c',
+    letterSpacing: '-0.01em',
+  },
+  desktopLinks: {
+    display: 'flex',
+    listStyle: 'none',
+    gap: '0.25rem',
+    alignItems: 'center',
+  },
+  link: {
+    display: 'block',
+    padding: '0.4rem 0.85rem',
+    borderRadius: '6px',
+    fontWeight: '500',
+    fontSize: '0.95rem',
+    color: '#32373c',
+    textDecoration: 'none',
+    transition: 'background 0.15s, color 0.15s',
+  },
+  linkActive: {
+    background: '#2ad2c9',
+    color: '#ffffff',
+    fontWeight: '600',
+  },
+  hamburger: {
+    display: 'none',   // shown via @media in real CSS; we'll use inline workaround
+    flexDirection: 'column',
+    gap: '4px',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: '6px',
+  },
+  bar: {
+    display: 'block',
+    width: '22px',
+    height: '2px',
+    background: '#32373c',
+    borderRadius: '2px',
+  },
+  mobileMenu: {
+    display: 'flex',
+    flexDirection: 'column',
+    background: '#ffffff',
+    borderTop: '1px solid #e5e5e5',
+    padding: '0.5rem 0',
+  },
+  mobileLink: {
+    padding: '0.75rem 1.5rem',
+    fontWeight: '500',
+    color: '#32373c',
+    textDecoration: 'none',
+    fontSize: '1rem',
+    transition: 'background 0.15s',
+  },
+  mobileLinkActive: {
+    color: '#2ad2c9',
+    fontWeight: '700',
+    background: '#f0fffe',
+  },
+};
+
+// Make hamburger visible on small screens via a style tag
+const responsiveStyle = `
+  @media (max-width: 640px) {
+    [data-hamburger] { display: flex !important; }
+    [data-desktop-links] { display: none !important; }
+  }
+`;
