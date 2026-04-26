@@ -21,7 +21,6 @@
   --text-dark: #1a1a1a;
   --text-muted: #6c757d;
   --card-bg: rgba(255, 255, 255, 0.92);
-  --overlay: rgba(30, 40, 50, 0.55);
   --radius: 12px;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -37,12 +36,14 @@ body {
   font-family: var(--font);
   color: var(--text-dark);
   min-height: 100vh;
+  /* Show the FULL globe image, not cropped */
   background-image: url('/globe-bg.jpg.jpg');
-  background-size: cover;
-  background-position: center top;
+  background-size: contain;
+  background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  background-color: #1e2832; /* fallback while image loads */
+  /* Cream colour matching the image edge so the sides blend in */
+  background-color: #f5ede5;
 }
 
 /* ---------- Root App Container ---------- */
