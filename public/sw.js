@@ -1,4 +1,4 @@
-const CACHE = 'globe-v1';
+const CACHE = 'globe-v2';
 const OFFLINE_URLS = ['/', '/mobility', '/visa-checker', '/about', '/contact'];
 
 self.addEventListener('install', e => {
