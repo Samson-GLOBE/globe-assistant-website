@@ -38,7 +38,7 @@ export default function Footer() {
         {/* Right — EU badge */}
         <div style={{ ...styles.col, alignItems: 'center' }}>
           <img
-            src="/eu-badge.png"
+            src="/eu-badge.jpg"
             alt="Co-funded by the European Union"
             style={styles.euBadge}
             onError={e => { e.target.style.display = 'none'; }}
