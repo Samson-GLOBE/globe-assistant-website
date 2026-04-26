@@ -59,7 +59,7 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <div className="min-h-screen flex flex-col" style={{
-  backgroundImage: 'linear-gradient(rgba(250,243,232,0.91), rgba(250,243,232,0.91)), url(/globe-bg.jpg.jpg)',
+  backgroundImage: 'linear-gradient(rgba(250,243,232,0.72), rgba(250,243,232,0.72)), url(/globe-bg.jpg.jpg)',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundAttachment: 'fixed'
