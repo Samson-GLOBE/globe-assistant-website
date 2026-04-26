@@ -13,11 +13,13 @@
 
 body {
   font-family: 'DM Sans', sans-serif;
+  background-image: linear-gradient(rgba(250,243,232,0.60), rgba(250,243,232,0.60)), url('/globe-bg.jpg.jpg');
+  background-size: cover;
+  background-position: center;
   background-color: #FAF3E8;
   color: #2C1810;
   -webkit-font-smoothing: antialiased;
 }
-
 h1, h2, h3, .font-display {
   font-family: 'Cormorant Garamond', serif;
 }
