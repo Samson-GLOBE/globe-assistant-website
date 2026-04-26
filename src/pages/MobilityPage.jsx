@@ -6,50 +6,86 @@ const destinations = [
     university: 'Universidad Rey Juan Carlos (URJC)',
     city: 'Madrid',
     flag: '🇪🇸',
-    image: '/spain-campus.jpg',
+    flagCode: 'ES',
+    image: '/spain-campus.JPG',
+    imageFallback: '/spain-campus.jpg',
     description:
       'Located in the vibrant capital Madrid, URJC offers a rich academic environment with strong links to European institutions. Students enjoy world-class research facilities and a dynamic student life.',
     highlights: ['Full EU member', 'Erasmus+ hub', 'Spanish & English programmes', 'Vibrant city life'],
-    language: 'Spanish / English',
-    duration: '1–2 semesters',
+    duration: 'Semester 1',
   },
   {
     country: 'United Kingdom',
     university: 'Bangor University',
     city: 'Bangor, Wales',
     flag: '🇬🇧',
-    image: '/uk-campus.jpg',
+    flagCode: 'GB',
+    image: '/uk-campus.JPG',
+    imageFallback: '/uk-campus.jpg',
     description:
       'Nestled between mountains and sea in North Wales, Bangor University combines stunning natural surroundings with excellent academic provision and a welcoming international community.',
     highlights: ['Top research university', 'Mountain & coastal setting', 'Strong student support', 'Historic Welsh culture'],
-    language: 'English',
-    duration: '1–2 semesters',
+    duration: 'Semester 2',
   },
   {
     country: 'Mexico',
     university: 'Universidad Autónoma de Tlaxcala (UATx)',
     city: 'Tlaxcala',
     flag: '🇲🇽',
+    flagCode: 'MX',
     image: '/mexico-campus.jpg',
+    imageFallback: '/mexico-campus.jpg',
     description:
       'UATx is one of Mexico\'s distinguished public universities, located in the historic state of Tlaxcala. It offers a unique Latin American academic and cultural experience with strong exchange programmes.',
     highlights: ['Historic UNESCO city', 'Latin American culture', 'Affordable living', 'Warm community'],
-    language: 'Spanish',
-    duration: '1–2 semesters',
+    duration: 'Summer School',
   },
   {
     country: 'Portugal',
     university: 'Partner University — Lisbon',
     city: 'Lisbon',
     flag: '🇵🇹',
-    image: null, // will show placeholder until image is added
+    flagCode: 'PT',
+    image: '/portugal-campus.JPG',
+    imageFallback: '/portugal-campus.jpg',
     description:
       'Lisbon, one of Europe\'s oldest and most beautiful capitals, hosts our Portuguese partner institution. Students benefit from exceptional quality of life, a sunny climate, and a thriving international community.',
-    highlights: ['EU member state', 'Atlantic coast location', 'Portuguese language', 'Affordable European capital'],
-    language: 'Portuguese / English',
-    duration: '1–2 semesters',
+    highlights: ['EU member state', 'Atlantic coast location', 'Affordable European capital', 'Rich cultural heritage'],
+    duration: 'Semester 3',
   },
 ];
+
+function CampusImage({ src, fallback, alt, flagCode }) {
+  const [currentSrc, setCurrentSrc] = useState(src);
+  const [failed, setFailed] = useState(false);
+
+  function handleError() {
+    if (currentSrc === src && fallback !== src) {
+      // Try the lowercase fallback first
+      setCurrentSrc(fallback);
+    } else {
+      // Both failed — show text placeholder
+      setFailed(true);
+    }
+  }
+
+  if (failed) {
+    return (
+      <div style={styles.imgPlaceholder}>
+        <span style={styles.flagCodeText}>{flagCode}</span>
+      </div>
+    );
+  }
+
+  return (
+    <img
+      src={currentSrc}
+      alt={alt}
+      style={styles.img}
+      onError={handleError}
+    />
+  );
+}
 
 export default function MobilityPage() {
   const [expanded, setExpanded] = useState(null);
@@ -77,23 +113,12 @@ export default function MobilityPage() {
             >
               {/* Photo */}
               <div style={styles.imgWrapper}>
-                {dest.image ? (
-                  <img
-                    src={dest.image}
-                    alt={`${dest.university} campus`}
-                    style={styles.img}
-                    onError={e => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'flex';
-                    }}
-                  />
-                ) : null}
-                <div style={{
-                  ...styles.imgPlaceholder,
-                  display: dest.image ? 'none' : 'flex',
-                }}>
-                  <span style={{ fontSize: '3rem' }}>{dest.flag}</span>
-                </div>
+                <CampusImage
+                  src={dest.image}
+                  fallback={dest.imageFallback}
+                  alt={`${dest.university} campus`}
+                  flagCode={dest.flagCode}
+                />
                 <div style={styles.flagBadge}>{dest.flag}</div>
               </div>
 
@@ -104,8 +129,9 @@ export default function MobilityPage() {
                   <span style={styles.cityTag}>{dest.city}</span>
                 </div>
                 <h3 style={styles.uniName}>{dest.university}</h3>
+
+                {/* Duration only — no language */}
                 <div style={styles.metaRow}>
-                  <span style={styles.metaItem}>🗣 {dest.language}</span>
                   <span style={styles.metaItem}>📅 {dest.duration}</span>
                 </div>
 
@@ -213,7 +239,6 @@ const styles = {
     height: '100%',
     objectFit: 'cover',
     display: 'block',
-    transition: 'transform 0.3s',
   },
   imgPlaceholder: {
     width: '100%',
@@ -222,6 +247,12 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  flagCodeText: {
+    fontSize: '2.5rem',
+    fontWeight: '800',
+    color: '#2ad2c9',
+    opacity: 0.6,
   },
   flagBadge: {
     position: 'absolute',
