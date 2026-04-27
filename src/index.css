@@ -37,13 +37,13 @@ body {
   color: var(--text-dark);
   min-height: 100vh;
   /* Show the FULL globe image, not cropped */
-  background-image: url('/globe-bg.jpg.jpg');
+  background-image: url('/hero-bg.jpg');
   background-size: contain;
   background-position: center center;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  /* Cream colour matching the image edge so the sides blend in */
-  background-color: #f5ede5;
+  /* Light grey matching the image edge so the sides blend in */
+  background-color: #efefef;
 }
 
 /* ---------- Root App Container ---------- */
