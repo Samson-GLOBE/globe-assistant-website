@@ -1,9 +1,10 @@
 import { Routes, Route, useLocation, BrowserRouter, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import SplashScreen from './components/SplashScreen';
 
 import MobilityPage from './pages/MobilityPage';
 import VisaCheckerPage from './pages/VisaCheckerPage';
@@ -40,9 +41,23 @@ function AnimatedPage({ children }) {
 function AppInner() {
   const location = useLocation();
 
+  // Show splash once per browser session (clears when tab is closed)
+  const [showSplash, setShowSplash] = useState(() => {
+    return !sessionStorage.getItem('splashShown');
+  });
+
+  function handleSplashDismiss() {
+    sessionStorage.setItem('splashShown', 'true');
+    setShowSplash(false);
+  }
+
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <ScrollToTop />
+
+      {/* Splash screen — renders on top of everything, first visit only */}
+      {showSplash && <SplashScreen onDismiss={handleSplashDismiss} />}
+
       <Navbar />
 
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
