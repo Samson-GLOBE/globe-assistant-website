@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
-  'https://hmsvuqawwjywtkqvsznp.supabase.co',
-  'sb_publishable_h_Av3qxNbMDCbVNaHGYPFg_AetCueCP'
+import.meta.env.VITE_SUPABASE_URL,
+import.meta.env.VITE_SUPABASE_ANON_KEY
 );
 
 // Four ecological conditions with Unsplash placeholder images
